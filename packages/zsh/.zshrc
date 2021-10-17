@@ -1,1 +1,1 @@
-echo 'zshrc'
+eval "$(starship init zsh)"
