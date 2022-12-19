@@ -2,15 +2,71 @@
 
 set -e
 
+for i in "$@"; do
+	case "$i" in
+		-s|--skip-apps)
+			skip_apps=1
+			shift ;;
+		*) ;;
+	esac
+done
+
+# brew install
 if [ ! -f /usr/local/bin/brew ]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
+# dotfiles clone
 if [ ! -d ~/dotfiles ]; then
 	cd ~
 	git clone git@github.com:takuyatechexpert/dotfiles.git
 fi
 
-brew bundle -v --file=~/dotfiles/Brewfile
+# brew bundle
+if [ ! "$skip_apps" ]; then
+	brew bundle -v --file=~/dotfiles/Brewfile
+fi
 
-stow -v -d ~/dotfiles/packages -t ~ zsh vim
+# starship.tomlのディレクトリ
+if [ ! -d ~/.config ]; then
+	mkdir ~/.config
+fi
+
+stow -v -d ~/dotfiles/packages -t ~ zsh vim neovim starship asdf tmux
+
+# asdf
+log() {
+	message="$1"
+	echo "$message"
+}
+
+is_dir() {
+	path="$1"
+	[ -d "$path" ]
+}
+
+for plugin in $(awk '{print $1}' ~/.tool-versions); do
+	if ! is_dir ~/.asdf/plugins/"$plugin"; then
+		asdf plugin add "$plugin"
+	fi
+done
+
+is_runtime_versions_changed() {
+	plugin="$1"
+	scecified=$(grep "$plugin" ~/.tool-versions | awk '{$1=""; print $0}')
+	installed=$(asdf list "$plugin" 2>&1)
+
+	is_changed=
+	for version in $specified; do
+		match=$(echo "$installed" | grep "$version")
+		[ -z "$match" ] && is_changed=1
+	done
+}
+
+for plugin in $(asdf plugin list); do
+	if is_runtime_versions_changed "$plugin"; then
+		log "Install rutime: $plugin"
+		asdf install "$plugin"
+	fi
+done
+
