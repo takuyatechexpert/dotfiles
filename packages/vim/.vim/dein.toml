@@ -1,20 +1,63 @@
 [[plugins]]
-repo = 'preservim/nerdtree'
+repo = "preservim/nerdtree"
+if = ''' !has('nvim') '''
 
 [[plugins]]
-repo = 'jiangmiao/auto-pairs'
+repo = "Shougo/defx.nvim"
+hook_add = '''
+source ~/.vim/plugins/defx.rc.vim
+'''
 
 [[plugins]]
-repo = 'airblade/vim-gitgutter'
+repo = "jiangmiao/auto-pairs"
 
 [[plugins]]
-repo = 'airblade/vim-gitgutter'
+repo = "airblade/vim-gitgutter"
 
 [[plugins]]
-repo = 'bronson/vim-trailing-whitespace'
+repo = "tpope/vim-fugitive"
 
 [[plugins]]
-repo = 'ctrlpvim/ctrlp.vim'
+repo = "bronson/vim-trailing-whitespace"
 
 [[plugins]]
-repo = 'neoclide/coc.nvim'
+repo = "itchyny/lightline.vim"
+
+[[plugins]]
+repo = "itchyny/vim-gitbranch"
+
+[[plugins]]
+repo = "sainnhe/gruvbox-material"
+
+[[plugins]]
+repo = "tpope/vim-commentary"
+
+[[plugins]]
+repo = 'junegunn/fzf'
+build = './install --all'
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+
+[[plugins]]
+repo = "neoclide/coc.nvim"
+if = ''' !has('nvim') '''
+hook_add = """
+    let g:coc_global_extensions = [
+    \ 'coc-phpls',
+    \ 'coc-json',
+    \ 'coc-css',
+    \ '@yaegassy/coc-volar',
+    \ 'coc-eslint',
+    \ 'coc-html',
+    \ 'coc-emmet',
+    \ 'coc-tailwindcss',
+    \ 'coc-tsserver',
+    \ ]
+"""
+
+[[plugins]]
+repo = "zsh-users/zsh-autosuggestions"
+
+[[plugins]]
+repo = "zsh-users/zsh-syntax-highlighting"
