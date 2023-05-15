@@ -5,11 +5,11 @@ set colorcolumn=80
 highlight ColorColumn guibg=#202020 ctermbg=lightgray
 
 " fzf
-nnoremap <leader>f :<C-u>Files<CR>
-nnoremap <leader>F :<C-u>GFiles<CR>
-nnoremap <leader>b :<C-u>Buffers<CR>
-nnoremap <leader>G :<C-u>Ag<CR>
-nnoremap <leader>g :<C-u>Rg<CR>
+" nnoremap <leader>f :<C-u>Files<CR>
+" nnoremap <leader>F :<C-u>GFiles<CR>
+" nnoremap <leader>b :<C-u>Buffers<CR>
+" nnoremap <leader>G :<C-u>Ag<CR>
+" nnoremap <leader>g :<C-u>Rg<CR>
 
 " 文字列検索の際にファイル名はmatchしない
 command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
