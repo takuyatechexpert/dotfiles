@@ -32,7 +32,7 @@ if [ ! -d ~/.config ]; then
 	mkdir ~/.config
 fi
 
-stow -v -d ~/dotfiles/packages -t ~ zsh vim neovim starship asdf tmux
+stow -v -d ~/dotfiles/packages -t ~ zsh vim neovim starship asdf tmux wezterm
 
 # asdf
 log() {
