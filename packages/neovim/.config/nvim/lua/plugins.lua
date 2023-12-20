@@ -44,6 +44,8 @@ return {
   'tpope/vim-commentary',
   'tpope/vim-surround',
 
+  'sheerun/vim-polyglot',
+
   {
     "folke/which-key.nvim",
     lazy = true
