@@ -57,6 +57,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end
 })
 
+
+-- Autocomplete keybindings
+local cmp = require('cmp')
+local cmp_action = require('lsp-zero').cmp_action()
+
+cmp.setup({
+  mapping = cmp.mapping.preset.insert({
+    -- `Enter` key to confirm completion
+    ['<CR>'] = cmp.mapping.confirm({select = false}),
+  })
+})
+
 lspconfig.tsserver.setup({})
 lspconfig.eslint.setup({})
 lsp.setup()

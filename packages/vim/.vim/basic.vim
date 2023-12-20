@@ -38,7 +38,7 @@ let &t_SI.= "\e[6 q"
 set number
 set relativenumber
 set foldcolumn=0
-set signcolumn=number
+" set signcolumn=number
 
 " ステータスライン
 let g:lightline = {
