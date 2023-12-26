@@ -1,23 +1,33 @@
-local lsp = require('lsp-zero').preset({})
+local lsp = require('lsp-zero')
 
 lsp.on_attach(function(client, bufnr)
   lsp.default_keymaps({buffer = bufnr})
 end)
 
-lsp.ensure_installed( {
-  "volar",
-  "emmet_ls",
-  "eslint",
-  "intelephense",
-  "phpactor",
-  "html",
-  "cssls",
-  "tsserver",
-  "tailwindcss",
-  "graphql",
-  "lua_ls",
-  "prismals",
-  "svelte",
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  ensure_installed = {
+    "volar",
+    "emmet_ls",
+    "eslint",
+    "intelephense",
+    "phpactor",
+    "html",
+    "cssls",
+    "tsserver",
+    "tailwindcss",
+    "graphql",
+    "lua_ls",
+    "prismals",
+    "svelte",
+  },
+  handlers = {
+    lsp.default_setup,
+    lua_ls = function()
+      local lua_opts = lsp.nvim_lua_ls()
+      require('lspconfig').lua_ls.setup(lua_opts)
+    end,
+  }
 })
 
 local lspconfig = require('lspconfig')
@@ -60,9 +70,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Autocomplete keybindings
 local cmp = require('cmp')
-local cmp_action = require('lsp-zero').cmp_action()
+local cmp_format = require('lsp-zero').cmp_format()
 
 cmp.setup({
+  formatting = cmp_format,
   mapping = cmp.mapping.preset.insert({
     -- `Enter` key to confirm completion
     ['<CR>'] = cmp.mapping.confirm({select = false}),
