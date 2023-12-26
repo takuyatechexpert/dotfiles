@@ -1,27 +1,21 @@
 return {
   {
     'VonHeikemen/lsp-zero.nvim',
-    branch = 'v2.x',
-    dependencies = {
-      -- LSP Support
-      {'neovim/nvim-lspconfig'},
-      {
-        'williamboman/mason.nvim',
-        build = function()
-          pcall(vim.cmd, 'MasonUpdate')
-        end,
-      },
-      {'williamboman/mason-lspconfig.nvim'},
-
-      -- Autocompletion
-      {'hrsh7th/nvim-cmp'},
-      {'hrsh7th/cmp-nvim-lsp'},
-      {'L3MON4D3/LuaSnip'},
-    },
+    branch = 'v3.x',
     config = function()
       require('config/lspconfig')
-    end
+    end,
   },
+    -- LSP Support
+  {'neovim/nvim-lspconfig'},
+  {'williamboman/mason.nvim'},
+  {'williamboman/mason-lspconfig.nvim'},
+
+  -- Autocompletion
+  {'hrsh7th/nvim-cmp'},
+  {'hrsh7th/cmp-nvim-lsp'},
+  {'L3MON4D3/LuaSnip'},
+
   -- auto tag pairs
   'jiangmiao/auto-pairs',
   -- auto tag pairs
@@ -44,7 +38,74 @@ return {
   'tpope/vim-commentary',
   'tpope/vim-surround',
 
-  'sheerun/vim-polyglot',
+  {
+    "nvim-treesitter/nvim-treesitter",
+    version = false,
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      ensure_installed = {
+        "lua",
+        "vim",
+        "nix",
+
+        "html",
+        "javascript",
+        "typescript",
+        "tsx",
+        "vue",
+        "svelte",
+        "astro",
+        "prisma",
+        "graphql",
+
+        "dart",
+        "php",
+        "go",
+        "gomod",
+      },
+
+      context_commentstring = {
+        enable = true,
+        enable_autocmd = false,
+      },
+
+      highlight = {
+        enable = true,
+      },
+
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection    = "gnn",
+          node_incremental  = "grn",
+          scope_incremental = "grc",
+          node_decremental  = "grm",
+        },
+      },
+
+      indent = {
+        enable = true,
+      },
+    },
+    config = function(_, opts)
+      require("nvim-treesitter.configs").setup(opts)
+
+      local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+
+      parser_config.blade = {
+          install_info = {
+              url = "https://github.com/EmranMR/tree-sitter-blade",
+              files = {"src/parser.c"},
+              branch = "main",
+          },
+          filetype = "blade"
+      }
+
+      -- Automatically set syntax for astro files
+      vim.cmd "autocmd BufRead,BufEnter *.astro set filetype=astro"
+    end,
+  },
 
   {
     "folke/which-key.nvim",
