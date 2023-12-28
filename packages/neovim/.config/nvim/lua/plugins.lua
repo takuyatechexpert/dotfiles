@@ -26,17 +26,104 @@ return {
   {
     'lewis6991/gitsigns.nvim',
     config = function()
-      require('gitsigns').setup()
+      vim.defer_fn(function()
+        require('gitsigns').setup {
+        }
+      end, 200)
     end
   },
 
   -- extra space
   'bronson/vim-trailing-whitespace',
-  'itchyny/lightline.vim',
   'itchyny/vim-gitbranch',
   'sainnhe/gruvbox-material',
-  'tpope/vim-commentary',
   'tpope/vim-surround',
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+        -- add any options here
+    },
+    lazy = false,
+  },
+
+  {
+    "nvim-lualine/lualine.nvim",
+    enabled = true,
+    event = "VeryLazy",
+    dependencies = {
+        "nvim-tree/nvim-web-devicons",
+        "gitsigns.nvim",
+    },
+    opts = function(_, opts)
+        local disabled_filetypes = {
+            "dap-repl",
+            "dapui_breakpoints",
+            "dapui_console",
+            "dapui_scopes",
+            "dapui_stacks",
+            "dapui_watches",
+            "mason",
+            "NvimTree",
+            "TelescopePrompt",
+            "Trouble",
+        }
+        return vim.tbl_deep_extend("force", opts, {
+            options = {
+                icons_enabled = true,
+                theme = "ayu_mirage", -- Use the catppuccin theme plugin.
+                always_divide_middle = true,
+                globalstatus = true,
+            },
+            disabled_filetypes = {
+                statusline = disabled_filetypes,
+                winbar = disabled_filetypes,
+            },
+            sections = {
+                lualine_a = { "mode" },
+                lualine_b = {
+                    {
+                        "branch",
+                        on_click = function()
+                            vim.cmd("Telescope git_branches")
+                        end,
+                    },
+                    {
+                        "diff",
+                        on_click = function()
+                            require("gitsigns").diffthis()
+                        end,
+                    },
+                    {
+                        "diagnostics",
+                        update_in_insert = true,
+                        always_visible = false,
+                        sources = { "nvim_diagnostic" },
+                        on_click = function()
+                            vim.cmd("TroubleToggle document_diagnostics")
+                        end,
+                    },
+                },
+                lualine_c = {
+                    {
+                        "filename",
+                        file_status = true,
+                        newfile_status = true,
+                        path = 1, -- Show only the filename.
+                    },
+                },
+                lualine_x = { "encoding", "filesize", "filetype", "fileformat" },
+                lualine_y = { "searchcount", "progress" },
+                lualine_z = { "location" },
+            },
+            extensions = { -- Enable integrations.
+                "lazy",
+                "nvim-dap-ui",
+                "nvim-tree",
+                "quickfix",
+            },
+        })
+    end,
+},
 
   {
     "nvim-treesitter/nvim-treesitter",
