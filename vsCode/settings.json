@@ -1,0 +1,75 @@
+{
+    "editor.tabSize": 2,
+    "files.autoSave": "onWindowChange",
+    "workbench.colorTheme": "Noctis Obscuro",
+    "editor.columnSelection": false,
+    // vim
+    "vim.leader": ",",
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "j"],
+            "after": ["<Esc>"]
+        }
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+          "before": ["<C-h>"],
+          "after": ["<C-W>", "h"]
+        },
+        {
+          "before": ["<C-l>"],
+          "after": ["<C-W>", "l"]
+        },
+        // サイドバーを開く
+        {
+          "before": ["<leader>", "e"],
+          "after": [],
+          "commands": [
+            { "command": "workbench.action.toggleSidebarVisibility" }
+          ]
+        },
+        // ファイル検索
+        {
+          "before": ["<leader>", "f"],
+          "after": [],
+          "commands": [
+            { "command": "workbench.action.quickOpen" }
+          ]
+        }
+    ],
+    "vim.statusBarColorControl": true,
+    "vim.statusBarColors" : {
+        "normal": "#005f5f",
+        "insert": "#80f0ff",
+        "visual": "#5f00af",
+        "visualline": "#005f87",
+        "visualblock": "#86592d",
+        "replace": "#000000"
+    },
+    "editor.lineNumbers": "relative",
+    "vim.hlsearch": true,
+
+    // ミニマップを無効化
+    "editor.minimap.renderCharacters": false,
+    "[json]": {
+
+        "editor.quickSuggestions": {
+            "strings": true
+        },
+        "editor.suggest.insertMode": "replace",
+        "gitlens.codeLens.scopes": [
+            "document"
+        ]
+    },
+    "editor.fontLigatures": null,
+    "editor.bracketPairColorization.enabled": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.colorCustomizations": {
+      "statusBar.background": "#005f5f",
+      "statusBar.noFolderBackground": "#005f5f",
+      "statusBar.debuggingBackground": "#005f5f",
+      "statusBar.foreground": "#ffffff"
+    },
+    "workbench.editor.untitled.hint": "hidden",
+    "window.zoomLevel": -1,
+}
