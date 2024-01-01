@@ -43,4 +43,8 @@ if len(s:removed_plugins) > 0
   call dein#recache_runtimepath()
 endif
 
+" vim-fugitive キーマップ
+nnoremap <leader>d :<C-u>Gdiff<CR>
+nnoremap <leader>r :<C-u>Git blame<CR>
+
 execute 'source' '~/dotfiles/packages/vim/.vim/basic.vim'

@@ -21,8 +21,26 @@ return {
   -- auto tag pairs
   'jiangmiao/auto-pairs',
 
+  -- indent
+  'Yggdroot/indentLine',
   -- git
-  'tpope/vim-fugitive',
+  {
+    'dinhhuy258/git.nvim',
+    config = function ()
+      require('git').setup({
+        -- NOTE: `quit_blame` and `blame_commit` are still merged to the keymaps even if `default_mappings = false`
+        default_mappings = true,
+
+        keymaps = {
+          -- Open blame commit
+          diff = "<Leader>gd",
+          -- Close git diff
+          diff_close = "<Leader>gD",
+        },
+      })
+    end
+  },
+
   {
     'lewis6991/gitsigns.nvim',
     config = function()
@@ -202,7 +220,7 @@ return {
   -- fzf
   {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.1',
+    tag = '0.1.4',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       require('config/telescope')

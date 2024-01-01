@@ -1,3 +1,5 @@
+vim.loader.enable()
+
 local cmd = vim.cmd
 
 if vim.fn.has('nvim') == 1 then

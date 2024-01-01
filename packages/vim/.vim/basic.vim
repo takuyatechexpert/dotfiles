@@ -21,9 +21,11 @@ command! FZFFileList call fzf#run({
 let NERDTreeShowHidden = 1
 :noremap <C-n> :NERDTreeToggle<CR>
 
-" vim-fugitive キーマップ
-nnoremap <leader>d :<C-u>Gdiff<CR>
-nnoremap <leader>r :<C-u>Git blame<CR>
+" インデントの文字
+let g:indentLine_char_list = ['┊']
+
+" git.nvim キーマップ
+nnoremap <leader>r :<C-u>GitBlame<CR>
 
 " vim-gitgutter
 "変更点表示の時間を設定
