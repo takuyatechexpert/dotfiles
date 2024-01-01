@@ -69,7 +69,6 @@ return {
   -- vim mode line decorations
   {
     'mvllow/modes.nvim',
-    lazy = true,
     tag = 'v0.2.0',
     config = function()
       require('modes').setup()
