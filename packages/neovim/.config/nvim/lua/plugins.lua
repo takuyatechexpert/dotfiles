@@ -23,9 +23,11 @@ return {
 
   -- indent
   'Yggdroot/indentLine',
+
   -- git
   {
     'dinhhuy258/git.nvim',
+    lazy = true,
     config = function ()
       require('git').setup({
         -- NOTE: `quit_blame` and `blame_commit` are still merged to the keymaps even if `default_mappings = false`
@@ -62,6 +64,33 @@ return {
         -- add any options here
     },
     lazy = false,
+  },
+
+  -- vim mode line decorations
+  {
+    'mvllow/modes.nvim',
+    lazy = true,
+    tag = 'v0.2.0',
+    config = function()
+      require('modes').setup()
+    end
+  },
+
+  -- vim noice
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add any options here
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      "rcarriga/nvim-notify",
+      }
   },
 
   {
@@ -141,7 +170,7 @@ return {
             },
         })
     end,
-},
+  },
 
   {
     "nvim-treesitter/nvim-treesitter",
