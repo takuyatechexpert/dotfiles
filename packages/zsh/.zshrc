@@ -13,9 +13,9 @@ setopt list_packed
 # 補完候補一覧をカラー表示
 zstyle ':completion:*' list-colors ''
 
-# プラグインを有効化
-source ~/.cache/dein/repos/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.cache/dein/repos/github.com/zsh-users/zsh-syntax-highlighting
+# zsh autosuggerstions プラグインを有効化
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # laravel sailのエイリアス
 alias sail=vendor/bin/sail
@@ -37,9 +37,6 @@ export NVM_DIR="$HOME/.nvm"
 set PKG_CONFIG_PATH /usr/local/opt/icu4c/lib/pkgconfig /usr/local/opt/krb5/lib/pkgconfig /usr/local/opt/libedit/lib/pkgconfig /usr/local/opt/libxml2/lib/pkgconfig /usr/local/opt/openssl@1.1/lib/pkgconfig $PKG_CONFIG_PATH
 set PATH /usr/local/opt/bison/bin $PATH
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
-
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # phpbrew
 [[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc
