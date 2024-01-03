@@ -8,6 +8,9 @@ brew "the_silver_searcher"
 brew "ripgrep"
 brew "tmux"
 
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+
 brew "asdf"
 brew "coreutils"
 brew "curl"

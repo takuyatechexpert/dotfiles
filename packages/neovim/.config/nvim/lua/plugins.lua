@@ -259,8 +259,4 @@ return {
     dir = '~/.fzf',
     run = './install --all',
   },
-
-  -- zsh
-  'zsh-users/zsh-autosuggestions',
-  'zsh-users/zsh-syntax-highlighting',
 }
