@@ -1,17 +1,24 @@
 local lsp = require('lsp-zero')
 
+-- extend_lspconfigを呼び出してlspconfigを拡張
+lsp.extend_lspconfig()
+
+-- lsp-compeプリセットを設定する
+lsp.preset('lsp-compe')
+
+-- LSPアタッチ時の設定
 lsp.on_attach(function(client, bufnr)
   lsp.default_keymaps({buffer = bufnr})
 end)
 
+-- masonの設定
 require('mason').setup({})
 require('mason-lspconfig').setup({
   ensure_installed = {
     "volar",
     "emmet_ls",
     "eslint",
-    "intelephense",
-    "phpactor",
+    -- "intelephense",
     "html",
     "cssls",
     "tsserver",
@@ -30,56 +37,62 @@ require('mason-lspconfig').setup({
   }
 })
 
+-- LSP設定
 local lspconfig = require('lspconfig')
 local lsp_defaults = lspconfig.util.default_config
 
+-- cmp-nvim-lspで設定されるcapabilitiesを統合
 lsp_defaults.capabilities = vim.tbl_deep_extend(
   'force',
   lsp_defaults.capabilities,
   require('cmp_nvim_lsp').default_capabilities()
 )
 
+-- LspAttachイベントでのキー設定
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
   callback = function(event)
     local opts = {buffer = true}
 
-  vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  vim.keymap.set('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  vim.keymap.set('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  vim.keymap.set('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  vim.keymap.set('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  vim.keymap.set('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  vim.keymap.set('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.keymap.set('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  vim.keymap.set('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  vim.keymap.set('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  vim.keymap.set('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  vim.keymap.set('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+    vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+    vim.keymap.set('n', '<space>f', vim.lsp.buf.format, opts)
 
-  -- eslint
-  vim.keymap.set('n', '<leader>lk', '<cmd>EslintFixAll<CR>', opts)
+    -- eslint
+    vim.keymap.set('n', '<leader>lk', '<cmd>EslintFixAll<CR>', opts)
   end
 })
 
-
--- Autocomplete keybindings
+-- 自動補完の設定
 local cmp = require('cmp')
 local cmp_format = require('lsp-zero').cmp_format()
 
 cmp.setup({
   formatting = cmp_format,
   mapping = cmp.mapping.preset.insert({
-    -- `Enter` key to confirm completion
     ['<CR>'] = cmp.mapping.confirm({select = false}),
   })
 })
 
+-- LSPサーバーの設定
 lspconfig.tsserver.setup({})
 lspconfig.eslint.setup({})
+
+-- lsp-zeroのセットアップ
 lsp.setup()
