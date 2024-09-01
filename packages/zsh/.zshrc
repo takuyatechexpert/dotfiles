@@ -36,7 +36,6 @@ export NVM_DIR="$HOME/.nvm"
 
 set PKG_CONFIG_PATH /usr/local/opt/icu4c/lib/pkgconfig /usr/local/opt/krb5/lib/pkgconfig /usr/local/opt/libedit/lib/pkgconfig /usr/local/opt/libxml2/lib/pkgconfig /usr/local/opt/openssl@1.1/lib/pkgconfig $PKG_CONFIG_PATH
 set PATH /usr/local/opt/bison/bin $PATH
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # phpbrew
 [[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc
@@ -54,3 +53,33 @@ alias tlist='tmux list-sessions'
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# memo
+function memo() {
+    # フォルダを指定（必要に応じて変更してください）
+    local folder_path="$HOME/memos"
+    mkdir -p "$folder_path"
+
+    # 現在の日時を取得し、ファイル名の基礎を作成 (Ymd_ 形式)
+    local base_name=$(date +"%Y%m%d_")
+    local index=1
+    local file_path=""
+
+    # インデックスが付与された新しいファイル名を探す
+    while true; do
+        file_path="${folder_path}/${base_name}$(printf "%02d" $index).md"
+        if [ ! -f "$file_path" ]; then
+            break
+        fi
+        index=$((index + 1))
+    done
+
+    # ファイルを作成し、nvimで開く
+    nvim "$file_path"
+}
+
+# 関数を簡単に呼び出せるようにエイリアスを設定
+alias memo="memo"
