@@ -107,21 +107,6 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" カラースキーム"
-" Important!!
-if has('termguicolors')
-  set termguicolors
-endif
-
-set background=dark
-
-" Set contrast.
-" This configuration option should be placed before `colorscheme gruvbox-material`.
-" Available values: 'hard', 'medium'(default), 'soft'
-let g:gruvbox_material_background = 'hard'
-
-colorscheme gruvbox-material
-
 let g:ctrlp_match_func = { 'match' : 'ctrlp_matchfuzzy#matcher' }
 
 nnoremap <leader>ll :call CocAction('format')<CR>
