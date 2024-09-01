@@ -10,12 +10,6 @@ brew "tmux"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
-brew "asdf"
-brew "coreutils"
-brew "curl"
-brew "git"
-brew "gpg"
-
 tap "homebrew/cask-fonts"
 
 cask "font-fira-code-nerd-font"
