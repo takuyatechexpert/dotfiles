@@ -21,7 +21,7 @@ require('mason-lspconfig').setup({
     -- "intelephense",
     "html",
     "cssls",
-    "tsserver",
+    "ts_ls",
     "tailwindcss",
     "graphql",
     "lua_ls",
@@ -89,10 +89,6 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({select = false}),
   })
 })
-
--- LSPサーバーの設定
-lspconfig.tsserver.setup({})
-lspconfig.eslint.setup({})
 
 -- lsp-zeroのセットアップ
 lsp.setup()
