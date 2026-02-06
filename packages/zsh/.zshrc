@@ -48,6 +48,11 @@ alias tatt='tmux attach -t'
 alias tkill='tmux kill-session -t'
 alias tlist='tmux list-sessions'
 
+# claude
+alias cclaude="claude --continue"
+alias rclaude="claude --resume"
+alias agentcc="claude --dangerously-skip-permissions"
+
 # export LANG=jp_JP.UTF-8
 # export LC_ALL=jp_JP.UTF-8
 export LANG=en_US.UTF-8
@@ -83,3 +88,10 @@ function memo() {
 
 # 関数を簡単に呼び出せるようにエイリアスを設定
 alias memo="memo"
+
+# Created by `pipx` on 2024-11-06 02:25:26
+export PATH="$PATH:/Users/t.furukawa/.local/bin"
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/t.furukawa/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
