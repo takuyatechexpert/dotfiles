@@ -38,20 +38,7 @@ hs.hotkey.bind({"alt"}, "space", function()
   end
 end)
 
--- -- window up
--- hs.hotkey.bind({"alt", "ctrl"}, "H", function()
---     local win = hs.window.focusedWindow()
---     local f = win:frame()
---     local screen = win:screen()
---     local max = screen:frame()
-
---     f.x = max.x
---     f.y = max.y
---     f.w = max.w / 2
---     f.h = max.h
---     win:setFrame(f)
---   end)
--- window left
+-- window分割
 -- window left
 hs.hotkey.bind({"alt", "ctrl"}, "H", function()
   local win = hs.window.focusedWindow()
@@ -193,6 +180,65 @@ hs.hotkey.bind({"alt", "ctrl"}, "M", function()
   f.h = max.h / 2
   win:setFrame(f)
 end)
+
+-- window left third
+hs.hotkey.bind({"alt", "ctrl"}, "I", function()
+  local win = hs.window.focusedWindow()
+  local f = win:frame()
+  local screen = win:screen()
+  local max = screen:frame()
+
+  f.x = max.x
+  f.y = max.y
+  f.w = max.w / 3
+  f.h = max.h
+  win:setFrame(f)
+end)
+
+-- window middle third
+hs.hotkey.bind({"alt", "ctrl"}, "O", function()
+  local win = hs.window.focusedWindow()
+  local f = win:frame()
+  local screen = win:screen()
+  local max = screen:frame()
+
+  f.x = max.x + (max.w / 3)
+  f.y = max.y
+  f.w = max.w / 3
+  f.h = max.h
+  win:setFrame(f)
+end)
+
+-- window right third
+hs.hotkey.bind({"alt", "ctrl"}, "P", function()
+  local win = hs.window.focusedWindow()
+  local f = win:frame()
+  local screen = win:screen()
+  local max = screen:frame()
+
+  f.x = max.x + (2 * max.w / 3)
+  f.y = max.y
+  f.w = max.w / 3
+  f.h = max.h
+  win:setFrame(f)
+end)
+
+-- window 5分割
+hs.hotkey.bind({"alt", "ctrl"}, "space", function()
+  local win = hs.window.focusedWindow()
+  if not win then return end
+
+  local screen = win:screen()
+  local frame = screen:frame()
+
+  local fifth = frame.w / 5  -- 画面を5分割した幅
+  local newX = frame.x + fifth  -- 2つ目の領域の開始位置
+  local newWidth = fifth * 3  -- 2, 3, 4 の領域をカバーする幅
+
+  win:setFrame({x = newX, y = frame.y, w = newWidth, h = frame.h})
+end)
+
+
 
 -- MINAGINE Timestamp を起動またはアクティブにするホットキー
 hs.hotkey.bind({"alt", "cmd"}, "M", function()
