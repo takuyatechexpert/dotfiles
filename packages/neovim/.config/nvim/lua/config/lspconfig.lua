@@ -41,11 +41,11 @@ require('mason-lspconfig').setup({
 local lspconfig = require('lspconfig')
 local lsp_defaults = lspconfig.util.default_config
 
--- cmp-nvim-lspで設定されるcapabilitiesを統合
+-- blink.cmpで設定されるcapabilitiesを統合
 lsp_defaults.capabilities = vim.tbl_deep_extend(
   'force',
   lsp_defaults.capabilities,
-  require('cmp_nvim_lsp').default_capabilities()
+  require('blink.cmp').get_lsp_capabilities()
 )
 
 -- LspAttachイベントでのキー設定
@@ -75,19 +75,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<space>f', vim.lsp.buf.format, opts)
 
     -- eslint
-    vim.keymap.set('n', '<leader>lk', '<cmd>EslintFixAll<CR>', opts)
+    vim.keymap.set('n', '<leader>kl', '<cmd>EslintFixAll<CR>', opts)
   end
-})
-
--- 自動補完の設定
-local cmp = require('cmp')
-local cmp_format = require('lsp-zero').cmp_format()
-
-cmp.setup({
-  formatting = cmp_format,
-  mapping = cmp.mapping.preset.insert({
-    ['<CR>'] = cmp.mapping.confirm({select = false}),
-  })
 })
 
 -- lsp-zeroのセットアップ

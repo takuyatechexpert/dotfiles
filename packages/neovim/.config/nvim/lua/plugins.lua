@@ -11,16 +11,6 @@ return {
   {'williamboman/mason.nvim'},
   {'williamboman/mason-lspconfig.nvim'},
 
-  -- Autocompletion
-  {'hrsh7th/nvim-cmp'},
-  {'hrsh7th/cmp-nvim-lsp'},
-  {'L3MON4D3/LuaSnip'},
-
-  -- git cppilot
-  {
-    'github/copilot.vim',
-    lazy=false,
-  },
 
   -- color scheme
   {'sainnhe/gruvbox-material',
@@ -30,6 +20,12 @@ return {
   },
 
   -- AI assistant
+  -- git cppilot
+  {
+    'github/copilot.vim',
+    lazy=false,
+  },
+
   -- claude code
   {
     "coder/claudecode.nvim",
@@ -60,16 +56,16 @@ return {
       -- Diff management
       { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
       { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
-      -- Window size adjustment
+      -- Window size adjustment (Vim側から実行)
       {
-        "<leader>ch",
-        "<cmd>execute 'wincmd l | vertical resize +10 | wincmd p'<cr>",
-        desc = "Increase Claude Code width by 10 columns"
+        "<leader>l",
+        "<cmd>vertical resize +10<cr>",
+        desc = "Increase Vim window width by 10 columns"
       },
       {
-        "<leader>cl",
-        "<cmd>execute 'wincmd l | vertical resize -10 | wincmd p'<cr>",
-        desc = "Decrease Claude Code width by 10 columns"
+        "<leader>h",
+        "<cmd>vertical resize -10<cr>",
+        desc = "Decrease Vim window width by 10 columns"
       },
     },
   },
@@ -314,6 +310,70 @@ return {
     end
   },
 
+  -- file explorer
+  {
+    'stevearc/oil.nvim',
+    lazy = false,
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('oil').setup({
+        default_file_explorer = true,
+        columns = {
+          'icon',
+          'permissions',
+          'size',
+          'mtime',
+        },
+        view_options = {
+          show_hidden = true,
+          is_hidden_file = function(name, bufnr)
+            return vim.startswith(name, '.')
+          end,
+          is_always_hidden = function(name, bufnr)
+            return false
+          end,
+        },
+        skip_confirm_for_simple_edits = false,
+        prompt_save_on_select_new_entry = true,
+        keymaps = {
+          ['g?'] = 'actions.show_help',
+          ['<CR>'] = 'actions.select',
+          ['<C-v>'] = { 'actions.select', opts = { vertical = true } },
+          ['<C-\\>'] = { 'actions.select', opts = { horizontal = true } },
+          ['<C-t>'] = { 'actions.select', opts = { tab = true } },
+          ['<C-p>'] = 'actions.preview',
+          ['<C-s>'] = false,
+          ['<C-h>'] = false,
+          ['<C-c>'] = 'actions.close',
+          ['<C-r>'] = 'actions.refresh',
+          ['-'] = 'actions.parent',
+          ['_'] = 'actions.open_cwd',
+          ['`'] = 'actions.cd',
+          ['~'] = 'actions.tcd',
+          ['gs'] = 'actions.change_sort',
+          ['gx'] = 'actions.open_external',
+          ['g.'] = 'actions.toggle_hidden',
+          ['g\\'] = 'actions.toggle_trash',
+        },
+        use_default_keymaps = true,
+      })
+
+      -- Open oil.nvim when opening a directory
+      vim.api.nvim_create_autocmd('VimEnter', {
+        callback = function()
+          local arg = vim.fn.argv(0)
+          if arg and arg ~= '' and vim.fn.isdirectory(arg) == 1 then
+            vim.cmd('Oil ' .. vim.fn.fnameescape(arg))
+          end
+        end,
+      })
+    end,
+    keys = {
+      { '-', '<cmd>Oil<cr>', desc = 'Open parent directory' },
+      { '<leader>e', '<cmd>Oil<cr>', desc = 'Open file explorer' },
+    },
+  },
+
   -- extra space
   'bronson/vim-trailing-whitespace',
   'itchyny/vim-gitbranch',
@@ -364,7 +424,7 @@ return {
             "dapui_watches",
             "mason",
             "NvimTree",
-            "TelescopePrompt",
+            "fzf",
             "Trouble",
         }
         return vim.tbl_deep_extend("force", opts, {
@@ -384,7 +444,7 @@ return {
                     {
                         "branch",
                         on_click = function()
-                            vim.cmd("Telescope git_branches")
+                            require('fzf-lua').git_branches()
                         end,
                     },
                     {
@@ -544,11 +604,10 @@ return {
 
   -- fzf
   {
-    'nvim-telescope/telescope.nvim',
-    tag = '0.1.4',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    'ibhagwan/fzf-lua',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      require('config/telescope')
+      require('config/fzf')
     end
   },
 }
