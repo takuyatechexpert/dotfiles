@@ -109,7 +109,7 @@ map <C-l> <C-W>l
 
 let g:ctrlp_match_func = { 'match' : 'ctrlp_matchfuzzy#matcher' }
 
-nnoremap <leader>ll :call CocAction('format')<CR>
+" nnoremap <leader>ll :call CocAction('format')<CR>
 
  " GoTo code navigation
 nmap <silent> gd <Plug>(coc-definition)
@@ -133,4 +133,23 @@ let g:netrw_liststyle = 3
 " nmap <leader>o <Plug>OSCYank
 " let g:oscyank_term = 'tmux'
 " let g:oscyank_silent = v:true
+
+" ウィンドウサイズ調整
+nnoremap <leader>l :vertical resize +10<CR>
+nnoremap <leader>h :vertical resize -10<CR>
+nnoremap <leader>j :resize +10<CR>
+nnoremap <leader>k :resize -10<CR>
+
+" 背景色のトグル
+nnoremap <leader>w :call ToggleBackground()<CR>
+
+function! ToggleBackground()
+  if &background == 'dark'
+    set background=light
+    highlight Normal guibg=#FFFAF0 ctermbg=white
+  else
+    set background=dark
+    highlight Normal guibg=NONE ctermbg=NONE
+  endif
+endfunction
 
