@@ -277,7 +277,7 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "A", function()
 
               hs.timer.doAfter(1.0, function()  -- 1秒待ってからスクリプトを実行
                   -- `update_aws_credentials.sh` スクリプトのパスをクリップボードにコピー
-                  hs.pasteboard.setContents("~/projects/update_aws_credentials.sh")
+                  hs.pasteboard.setContents("~/projects/scripts/update_aws_credentials.sh")
                   hs.eventtap.keyStroke({"cmd"}, "v")
                   hs.eventtap.keyStroke({}, "return")
 
