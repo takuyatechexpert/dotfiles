@@ -1,38 +1,29 @@
 local wezterm = require 'wezterm'
 local act = wezterm.action
+local equalize = require 'equalize'
 local config = {}
+
+-- ── Helpers ──────────────────────────────────────────────
 
 local function cs(key, action)
   return { key = key, mods = 'CTRL|SHIFT', action = action }
 end
 
-config.keys = {
-  -- move tab
-  cs('p', act.ActivateTabRelative(-1)),
-  cs('n', act.ActivateTabRelative(1)),
+-- ── General ──────────────────────────────────────────────
 
-  -- ScrollByPage
-  cs('y', act.ScrollByLine(-1)),
-  cs('e', act.ScrollByLine(1)),
+config.use_ime = true
 
-  -- split pane
-  cs('|', act.SplitHorizontal { domain = 'CurrentPaneDomain' }),
-  cs('s', act.SplitVertical { domain = 'CurrentPaneDomain' }),
+-- ── Appearance ───────────────────────────────────────────
 
-  -- move pane
-  cs('h', act.ActivatePaneDirection 'Left'),
-  cs('j', act.ActivatePaneDirection 'Down'),
-  cs('k', act.ActivatePaneDirection 'Up'),
-  cs('l', act.ActivatePaneDirection 'Right'),
-
-  -- close pane
-  cs('x', act.CloseCurrentPane { confirm = true }),
-}
-
--- tab bar
 config.window_decorations = 'RESIZE'
 config.show_new_tab_button_in_tab_bar = false
-wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+
+config.window_frame = {
+  inactive_titlebar_bg = 'none',
+  active_titlebar_bg = 'none',
+}
+
+wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
   local background = "#5c6d74"
   local foreground = "#FFFFFF"
 
@@ -52,10 +43,31 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   }
 end)
 
-config.window_frame = {
-  inactive_titlebar_bg = 'none',
-  active_titlebar_bg = 'none',
+-- ── Keybindings ──────────────────────────────────────────
+
+config.keys = {
+  -- tab navigation
+  cs('p', act.ActivateTabRelative(-1)),
+  cs('n', act.ActivateTabRelative(1)),
+
+  -- scroll
+  cs('y', act.ScrollByLine(-1)),
+  cs('e', act.ScrollByLine(1)),
+
+  -- split pane
+  cs('|', act.SplitHorizontal { domain = 'CurrentPaneDomain' }),
+  cs('s', act.SplitVertical { domain = 'CurrentPaneDomain' }),
+
+  -- pane operations
+  cs('g', wezterm.action_callback(equalize.equalize)),
+  cs('z', act.TogglePaneZoomState),
+  cs('q', act.CloseCurrentPane { confirm = true }),
+
+  -- pane navigation
+  cs('h', act.ActivatePaneDirection 'Left'),
+  cs('j', act.ActivatePaneDirection 'Down'),
+  cs('k', act.ActivatePaneDirection 'Up'),
+  cs('l', act.ActivatePaneDirection 'Right'),
 }
 
-config.use_ime = true
 return config
