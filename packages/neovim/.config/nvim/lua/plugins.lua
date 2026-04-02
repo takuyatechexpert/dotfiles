@@ -34,7 +34,7 @@ return {
       require("claudecode").setup({
         terminal = {
           split_side = "right",
-          split_width_percentage = 0.40,
+          split_width_percentage = 0.42,
         },
       })
     end,
@@ -56,17 +56,6 @@ return {
       -- Diff management
       { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
       { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
-      -- Window size adjustment (Vim側から実行)
-      {
-        "<leader>l",
-        "<cmd>vertical resize +10<cr>",
-        desc = "Increase Vim window width by 10 columns"
-      },
-      {
-        "<leader>h",
-        "<cmd>vertical resize -10<cr>",
-        desc = "Decrease Vim window width by 10 columns"
-      },
     },
   },
 
@@ -289,7 +278,23 @@ return {
   },
 
   -- indent
-  'Yggdroot/indentLine',
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
+    config = function()
+      local hooks = require('ibl.hooks')
+      hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+        -- インデントガイド: 控えめな背景色（スペース文字には bg が必要）
+        vim.api.nvim_set_hl(0, 'IblIndent', { bg = '#3a3634', nocombine = true })
+        -- スコープ: 少し明るめの背景色
+        vim.api.nvim_set_hl(0, 'IblScope',  { bg = '#4a4340', nocombine = true })
+      end)
+      require('ibl').setup({
+        indent = { char = ' ', highlight = 'IblIndent' },
+        scope  = { enabled = true, highlight = 'IblScope' },
+      })
+    end,
+  },
 
   -- git
   -- このプラグインは、Neovim用のGitインターフェースを提供します。Gitリポジトリ内での変更点の表示や、差分の確認、コミット履歴の閲覧など、Git操作をNeovim内で簡単に行うことができます。設定オプションを使用して、キーマッピングや表示方法をカスタマイズすることも可能です。
@@ -364,6 +369,32 @@ return {
           local arg = vim.fn.argv(0)
           if arg and arg ~= '' and vim.fn.isdirectory(arg) == 1 then
             vim.cmd('Oil ' .. vim.fn.fnameescape(arg))
+          end
+        end,
+      })
+
+      -- Auto-refresh oil buffer when external changes may have occurred (e.g. files added by AI)
+      -- FocusGained sets a flag, then oil refreshes on next BufEnter
+      local oil_needs_refresh = false
+      vim.api.nvim_create_autocmd('FocusGained', {
+        callback = function()
+          oil_needs_refresh = true
+          if vim.bo.filetype == 'oil' then
+            vim.schedule(function()
+              require('oil.actions').refresh.callback()
+              oil_needs_refresh = false
+            end)
+          end
+        end,
+      })
+      vim.api.nvim_create_autocmd('BufEnter', {
+        pattern = 'oil://*',
+        callback = function()
+          if oil_needs_refresh then
+            oil_needs_refresh = false
+            vim.schedule(function()
+              require('oil.actions').refresh.callback()
+            end)
           end
         end,
       })
@@ -609,5 +640,21 @@ return {
     config = function()
       require('config/fzf')
     end
+  },
+
+  -- db-pilot: SQL query tool with Claude AI
+  {
+    "takuyatechexpert/db-pilot.nvim",
+    dependencies = { "coder/claudecode.nvim" },
+    config = function()
+      -- 接続情報は ~/.config/db-pilot/connections.yml で管理
+      require("db-pilot").setup({
+        default_connection = "local ddp",
+      })
+    end,
+    cmd = { "DbPilot" },
+    keys = {
+      { "<leader>qs", "<cmd>DbPilot<cr>", desc = "Open DB Pilot" },
+    },
   },
 }
