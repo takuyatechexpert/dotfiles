@@ -3,12 +3,14 @@
 # ============================================================
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+export EDITOR=nvim
 
 export NVM_DIR="$HOME/.nvm"
 
 export PATH=/opt/homebrew/bin:/opt/phpbrew/bin:/usr/local/bin:$PATH
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="$HOME/projects/claude-monitor/bin:$PATH"
+export PATH="$HOME/private-projects/claude-monitor/bin:$PATH"
+export PATH="$PATH:$HOME/private-projects/db-pilot.nvim/bin"
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="$HOME/.rd/bin:$PATH"
@@ -49,6 +51,26 @@ eval "$(zoxide init zsh)"
 # zsh-autosuggestions / zsh-syntax-highlighting
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# vi insert モードに emacs スタイルのキーバインドを追加
+# カーソル移動
+bindkey -M viins "^A" beginning-of-line
+bindkey -M viins "^E" end-of-line
+bindkey -M viins "^F" autosuggest-accept
+bindkey -M viins "^B" backward-char
+# 履歴
+bindkey -M viins "^P" up-line-or-history
+bindkey -M viins "^N" down-line-or-history
+bindkey -M viins "^R" history-incremental-search-backward
+# 削除
+bindkey -M viins "^D" delete-char-or-list
+bindkey -M viins "^H" backward-delete-char
+bindkey -M viins "^K" kill-line
+bindkey -M viins "^U" backward-kill-line
+bindkey -M viins "^W" backward-kill-word
+# その他
+bindkey -M viins "^Y" yank
+bindkey -M viins "^L" clear-screen
+bindkey -M viins "^T" transpose-chars
 
 # nvm
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
@@ -169,3 +191,9 @@ EOF
             ;;
     esac
 }
+
+# claude-monitor
+export PATH="/Users/t.furukawa/private-projects/claude-monitor/bin:$PATH"
+
+# claude-monitor
+export PATH="/Users/t.furukawa/private-projects/claude-monitor/bin:$PATH"
