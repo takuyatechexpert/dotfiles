@@ -5,8 +5,6 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export EDITOR=nvim
 
-export NVM_DIR="$HOME/.nvm"
-
 export PATH=/opt/homebrew/bin:/opt/phpbrew/bin:/usr/local/bin:$PATH
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$HOME/private-projects/claude-monitor/bin:$PATH"
@@ -72,10 +70,8 @@ bindkey -M viins "^Y" yank
 bindkey -M viins "^L" clear-screen
 bindkey -M viins "^T" transpose-chars
 
-# nvm
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# mise
+eval "$(mise activate zsh)"
 
 # phpbrew
 [[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc
@@ -85,6 +81,9 @@ bindkey -M viins "^T" transpose-chars
 
 # todo plugin
 source "${HOME}/todo/todo.plugin.zsh"
+
+# translate plugin
+source "${HOME}/dotfiles/packages/zsh/translate/translate.plugin.zsh"
 
 
 # ============================================================
@@ -116,6 +115,16 @@ alias claude-monitor='claude-monitor.sh'
 # ============================================================
 # 関数 (Functions)
 # ============================================================
+# yazi (終了時にyaziで最後にいたディレクトリにcdする)
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
 # memo
 function memo() {
     local folder_path="$HOME/memos"
