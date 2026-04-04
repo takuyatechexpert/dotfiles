@@ -15,7 +15,12 @@ config.use_ime = true
 
 -- ── Appearance ───────────────────────────────────────────
 
+config.colors = {
+  background = '#1a2b2b',
+}
 config.window_decorations = 'RESIZE'
+config.window_background_opacity = 0.80
+config.macos_window_background_blur = 10
 config.show_new_tab_button_in_tab_bar = false
 
 config.window_frame = {
