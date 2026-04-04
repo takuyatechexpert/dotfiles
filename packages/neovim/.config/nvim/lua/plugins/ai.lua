@@ -13,7 +13,7 @@ return {
       require("claudecode").setup({
         terminal = {
           split_side = "right",
-          split_width_percentage = 0.42,
+          split_width_percentage = 0.43,
         },
       })
     end,
