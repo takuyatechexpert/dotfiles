@@ -240,6 +240,7 @@ end)
 
 
 
+
 -- MINAGINE Timestamp を起動またはアクティブにするホットキー
 hs.hotkey.bind({"alt", "cmd"}, "M", function()
   local app = hs.application.get("MINAGINE Timestamp")
