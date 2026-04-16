@@ -1,0 +1,11 @@
+{
+  "_comment": "プロジェクト別の lint コマンド override。path はリポジトリルートの絶対パス、commands は言語キー(js/php/python/rust) → シェルコマンド。commands は $ROOT で実行される。",
+  "projects": [
+    {
+      "path": "~/projects/di-ssa-frontend",
+      "commands": {
+        "js": "cd src && npm run lint"
+      }
+    }
+  ]
+}
