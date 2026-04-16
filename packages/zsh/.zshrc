@@ -202,7 +202,4 @@ EOF
 }
 
 # claude-monitor
-export PATH="/Users/t.furukawa/private-projects/claude-monitor/bin:$PATH"
-
-# claude-monitor
-export PATH="/Users/t.furukawa/private-projects/claude-monitor/bin:$PATH"
+export PATH="$HOME/private-projects/claude-monitor/bin:$PATH"
