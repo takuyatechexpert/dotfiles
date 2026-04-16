@@ -1,20 +1,9 @@
 #!/bin/bash
 input=$(cat)
 
-# Colors
-GREEN='\033[32m'
-YELLOW='\033[33m'
-RED='\033[31m'
-DIM='\033[2m'
-RESET='\033[0m'
-
-# Mini bar: 8-level block character for percentage
-mini_bar() {
-  local pct=$1
-  local blocks=(▁ ▂ ▃ ▄ ▅ ▆ ▇ █)
-  local idx=$(( pct * 8 / 101 ))
-  echo "${blocks[$idx]}"
-}
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "${SCRIPT_DIR}/colors.sh"
+source "${SCRIPT_DIR}/bars.sh"
 
 MODEL=$(echo "$input" | jq -r '.model.display_name')
 FIVE_H=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
@@ -37,32 +26,28 @@ fmt_remaining() {
   fi
 }
 
-# Color based on percentage threshold
-color_by_pct() {
-  local pct=$1
-  if [ "$pct" -ge 80 ]; then
-    echo "$RED"
-  elif [ "$pct" -ge 50 ]; then
-    echo "$YELLOW"
-  else
-    echo "$GREEN"
-  fi
-}
-
 LIMITS=""
 if [ -n "$FIVE_H" ]; then
   PCT=$(printf '%.0f' "$FIVE_H")
   CLR=$(color_by_pct "$PCT")
-  BAR=$(mini_bar "$PCT")
-  PART="${CLR}5h:${PCT}%${BAR}${RESET}"
+  BAR=$(render_pct "$PCT")
+  if [ "$MODE" = "compact" ]; then
+    PART="${CLR}5h:${PCT}%${BAR}${RESET}"
+  else
+    PART="${CLR}5h:${PCT}%${RESET}${BAR}"
+  fi
   [ -n "$FIVE_H_RESET" ] && PART="$PART${DIM}($(fmt_remaining "$FIVE_H_RESET"))${RESET}"
   LIMITS="$PART"
 fi
 if [ -n "$WEEK" ]; then
   PCT=$(printf '%.0f' "$WEEK")
   CLR=$(color_by_pct "$PCT")
-  BAR=$(mini_bar "$PCT")
-  PART="${CLR}7d:${PCT}%${BAR}${RESET}"
+  BAR=$(render_pct "$PCT")
+  if [ "$MODE" = "compact" ]; then
+    PART="${CLR}7d:${PCT}%${BAR}${RESET}"
+  else
+    PART="${CLR}7d:${PCT}%${RESET}${BAR}"
+  fi
   [ -n "$WEEK_RESET" ] && PART="$PART${DIM}($(fmt_remaining "$WEEK_RESET"))${RESET}"
   LIMITS="${LIMITS:+$LIMITS  }$PART"
 fi
@@ -71,13 +56,23 @@ CTX=$(echo "$input" | jq -r '.context_window.used_percentage // 0')
 CTX_PART=""
 if [ -n "$CTX" ]; then
   CTX_INT=$(printf '%.0f' "$CTX")
-  BAR=$(mini_bar "$CTX_INT")
-  if [ "$CTX_INT" -ge 65 ]; then
-    CTX_PART="${RED}ctx:${CTX_INT}%${BAR} !!${RESET}"
-  elif [ "$CTX_INT" -ge 40 ]; then
-    CTX_PART="${YELLOW}ctx:${CTX_INT}%${BAR}${RESET}"
+  BAR=$(render_pct "$CTX_INT")
+  if [ "$MODE" = "compact" ]; then
+    if [ "$CTX_INT" -ge 65 ]; then
+      CTX_PART="${RED}ctx:${CTX_INT}%${BAR} !!${RESET}"
+    elif [ "$CTX_INT" -ge 40 ]; then
+      CTX_PART="${YELLOW}ctx:${CTX_INT}%${BAR}${RESET}"
+    else
+      CTX_PART="${GREEN}ctx:${CTX_INT}%${BAR}${RESET}"
+    fi
   else
-    CTX_PART="${GREEN}ctx:${CTX_INT}%${BAR}${RESET}"
+    if [ "$CTX_INT" -ge 65 ]; then
+      CTX_PART="${RED}ctx:${CTX_INT}%${RESET}${BAR}${RED} !!${RESET}"
+    elif [ "$CTX_INT" -ge 40 ]; then
+      CTX_PART="${YELLOW}ctx:${CTX_INT}%${RESET}${BAR}"
+    else
+      CTX_PART="${GREEN}ctx:${CTX_INT}%${RESET}${BAR}"
+    fi
   fi
 fi
 
