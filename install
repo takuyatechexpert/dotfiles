@@ -40,3 +40,8 @@ mise install
 # Claude Code
 mise use --global npm:@anthropic-ai/claude-code
 
+# work-claude: 業務専用スキルのシンボリックリンクを設定
+if [ -f ~/projects/work-claude/install.sh ]; then
+	sh ~/projects/work-claude/install.sh
+fi
+
