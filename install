@@ -32,13 +32,18 @@ if [ ! -d ~/.config ]; then
 	mkdir ~/.config
 fi
 
-stow -v -d ~/dotfiles/packages -t ~ zsh vim neovim starship mise tmux wezterm hammerspoon claude yazi
+stow -v -d ~/dotfiles/packages -t ~ zsh vim neovim starship mise tmux wezterm hammerspoon yazi
 
 # mise: install runtimes from .tool-versions
 mise install
 
 # Claude Code
 mise use --global npm:@anthropic-ai/claude-code
+
+# claude-code-settings: Claude Code 個人設定（rules/hooks/agents/skills/settings.json 等）
+if [ -f ~/private-projects/claude-code-settings/install.sh ]; then
+	sh ~/private-projects/claude-code-settings/install.sh
+fi
 
 # work-claude: 業務専用スキルのシンボリックリンクを設定
 if [ -f ~/projects/work-claude/install.sh ]; then

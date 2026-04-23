@@ -2,7 +2,3 @@
 
 packages/tmux/.tmux/plugins
 packages/tmux/.tmux/resurrect
-
-# Claude Code lint プロジェクト別 override（環境依存のためローカル管理）
-# テンプレート: packages/claude/.claude/hooks/lint/config.example.json
-packages/claude/.claude/hooks/lint/config.json
