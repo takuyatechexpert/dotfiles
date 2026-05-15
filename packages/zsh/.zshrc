@@ -49,26 +49,8 @@ eval "$(zoxide init zsh)"
 # zsh-autosuggestions / zsh-syntax-highlighting
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# vi insert モードに emacs スタイルのキーバインドを追加
-# カーソル移動
-bindkey -M viins "^A" beginning-of-line
-bindkey -M viins "^E" end-of-line
-bindkey -M viins "^F" autosuggest-accept
-bindkey -M viins "^B" backward-char
-# 履歴
-bindkey -M viins "^P" up-line-or-history
-bindkey -M viins "^N" down-line-or-history
-bindkey -M viins "^R" history-incremental-search-backward
-# 削除
-bindkey -M viins "^D" delete-char-or-list
-bindkey -M viins "^H" backward-delete-char
-bindkey -M viins "^K" kill-line
-bindkey -M viins "^U" backward-kill-line
-bindkey -M viins "^W" backward-kill-word
-# その他
-bindkey -M viins "^Y" yank
-bindkey -M viins "^L" clear-screen
-bindkey -M viins "^T" transpose-chars
+# ^F (forward-char) を 1 文字進む動作に戻す（補完受け入れは ^E 等に任せる）
+ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(end-of-line vi-add-eol)
 
 # mise
 eval "$(mise activate zsh)"
