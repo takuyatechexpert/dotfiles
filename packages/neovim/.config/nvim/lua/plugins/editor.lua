@@ -24,12 +24,7 @@ return {
   -- surround
   'tpope/vim-surround',
 
-  -- comment
-  {
-    'numToStr/Comment.nvim',
-    opts = {},
-    lazy = false,
-  },
+  -- comment: Neovim 0.10+ ビルトイン（gcc / gc{motion} / gbc）を使用
 
   -- vim mode line decorations
   {

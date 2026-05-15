@@ -27,11 +27,6 @@ return {
         "markdown",
         "markdown_inline",
       },
-      context_commentstring = {
-        enable = true,
-        enable_autocmd = false,
-      },
-
       highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,
